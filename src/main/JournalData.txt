@@ -1,6 +1,6 @@
-2025-12-22|s100201@student.fop|NEGATIVE|Ribut petir di beberapa tempat|Today was horrible...
+2025-12-22|s100201@student.fop|POSITIVE|Ribut petir di beberapa tempat|I love cats
 2025-12-21|s100201@student.fop|NEGATIVE|Ribut petir di beberapa tempat|My java code was not working today...
 2025-12-22|s100202@student.fop|POSITIVE|Ribut petir di beberapa tempat|I made a new friend today.
 2025-12-21|s100202@student.fop|NEGATIVE|Ribut petir di beberapa tempat|I miss my pet cat.
 2025-12-20|s100201@student.fop|POSITIVE|Ribut petir di beberapa tempat|I love java!
-2025-12-19|s100201@student.fop|NEGATIVE|Ribut petir di beberapa tempat|I hate the weather today.
+2025-12-19|s100201@student.fop|NEGATIVE|Ribut petir di beberapa tempat|what is the meaning of life?
