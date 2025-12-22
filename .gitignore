@@ -6,6 +6,7 @@ target/
 
 src/main/.env
 *.class
+src/main/JournalData.txt
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

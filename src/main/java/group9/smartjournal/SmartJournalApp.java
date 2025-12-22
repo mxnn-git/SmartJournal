@@ -2,7 +2,6 @@ package group9.smartjournal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -142,7 +141,7 @@ public class SmartJournalApp {
                 case "1" -> handleJournalFeature();
                 case "2" -> showWeeklySummary();
                 case "3" -> {
-                    System.out.println("\nGoodbye!");
+                    System.out.println("Goodbye!");
                     System.exit(0);
                 }
                 default -> System.out.println("Invalid option.");
@@ -193,7 +192,7 @@ public class SmartJournalApp {
                 // Split by "|" symbol. We use \\| because | is a special regex character
                 String[] parts = line.split("\\|", 5);
 
-                if (parts.length == 4) {
+                if (parts.length == 5) {
                     String date = parts[0];
                     String email = parts[1];
                     String mood = parts[2];
