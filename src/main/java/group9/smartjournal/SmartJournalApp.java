@@ -2,6 +2,8 @@ package group9.smartjournal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,6 +19,11 @@ public class SmartJournalApp {
     private static API api = new API();
 
     public static void main (String[] args) {
+//        // TEMP: Generate hashes for the assignment users
+//        System.out.println("Hash for pw-Stud#1: " + hashPassword("pw-Stud#1"));
+//        System.out.println("Hash for pw-Stud#2: " + hashPassword("pw-Stud#2"));
+//        System.exit(0); // Uncomment this if you just want to see the hashes and stop
+
         // 1. Load Env
         env = EnvLoader.loadEnv("src/main/.env");
 
@@ -74,16 +81,17 @@ public class SmartJournalApp {
     }
 
     // Method to check credentials
-    public static boolean login (String email, String password) {
-        // Loop through the loaded users list
+    public static boolean login (String email, String rawPassword) {
+        // 1. Hash the input password immediately
+        String hashedPassword = hashPassword(rawPassword);
+
         for (User user : users) {
-            // Login by email
-            if (user.getEmail().equals(email) &&  user.getPassword().equals(password)) {
+            // 2. Compare the hashed input vs the stored hash in the file
+            if (user.getEmail().equals(email) && user.getPassword().equals(hashedPassword)) {
                 currentUser = user;
                 return true;
             }
         }
-
         return false;
     }
 
@@ -396,5 +404,25 @@ public class SmartJournalApp {
 
         System.out.println("Press Enter to return to menu...");
         new Scanner(System.in).nextLine();
+    }
+
+    private static String hashPassword (String originalPassword) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
+
+            // Convert byte array to Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedhash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
