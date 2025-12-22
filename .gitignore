@@ -5,7 +5,7 @@ target/
 .kotlin
 
 src/main/.env
-src/main/JournalData.txt
+JournalData.txt
 *.class
 
 ### IntelliJ IDEA ###
