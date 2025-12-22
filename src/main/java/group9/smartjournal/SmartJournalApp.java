@@ -2,6 +2,8 @@ package group9.smartjournal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.LocalTime;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SmartJournalApp {
+
     // Store all loaded users here
     private static ArrayList<User> users = new ArrayList<>();
     private static ArrayList<JournalEntry> journals = new ArrayList<>();
@@ -19,10 +22,21 @@ public class SmartJournalApp {
     private static API api = new API();
 
     public static void main (String[] args) {
-//        // TEMP: Generate hashes for the assignment users
-//        System.out.println("Hash for pw-Stud#1: " + hashPassword("pw-Stud#1"));
-//        System.out.println("Hash for pw-Stud#2: " + hashPassword("pw-Stud#2"));
-//        System.exit(0); // Uncomment this if you just want to see the hashes and stop
+
+         /*
+         // TEMP: Generate hashes for the assignment users
+         System.out.println("Hash for pw-Stud#1: " + hashPassword("pw-Stud#1"));
+         System.out.println("Hash for pw-Stud#2: " + hashPassword("pw-Stud#2"));
+         System.exit(0); // Uncomment this if you just want to see the hashes and stop
+
+         s100201@student.fop
+         Foo Bar
+         pw-Stud#1
+
+         s100202@student.fop
+         John Doe
+         pw-Stud#2
+         */
 
         // 1. Load Env
         env = EnvLoader.loadEnv("src/main/.env");
@@ -36,22 +50,41 @@ public class SmartJournalApp {
         System.out.println("Welcome to Smart Journaling System");
 
         while (currentUser == null) {
-            System.out.print("Please enter your email to login: ");
-            String emailInput = inputScanner.nextLine();
+            System.out.println("\n1. Login");
+            System.out.println("2. Register New Account");
+            System.out.println("3. Exit");
+            System.out.print("Choose option: ");
+            String choice = inputScanner.nextLine();
 
-            System.out.print("Please enter your password: ");
-            String inputPassword = inputScanner.nextLine();
+            switch (choice) {
+                case "1" -> {
+                    System.out.print("Please enter your email to login: ");
+                    String emailInput = inputScanner.nextLine();
 
-            if (login(emailInput, inputPassword)) {
-                System.out.println("Login Successful!");
-                showWelcomePage();
-            } else
-                System.out.println("Invalid email or password. Please try again.\n");
+                    System.out.print("Please enter your password: ");
+                    String passwordInput = inputScanner.nextLine();
+
+                    if (login(emailInput, passwordInput)) {
+                        System.out.println("Login Successful!");
+                        showWelcomePage();
+                    } else {
+                        System.out.println("Invalid email or password. Please try again.");
+                    }
+                }
+                case "2" -> registerUser();
+                case "3" -> {
+                    System.out.println("Goodbye!");
+                    System.exit(0);
+                }
+                default -> System.out.println("Invalid option.");
+            }
         }
     }
 
-    // Method to read the text file
+    // === Login - Registration / Main Menu ===
+
     public static void loadUserData () {
+        // Method to read the text file
         // RELATIVE PATH: We just use the path name. Java looks in the project root
         File file = new File("src/main/UserData.txt");
 
@@ -80,8 +113,50 @@ public class SmartJournalApp {
         }
     }
 
-    // Method to check credentials
+    private static void registerUser () {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n=== User Registration ===");
+
+        System.out.print("Enter Email: ");
+        String email = scanner.nextLine();
+
+        // Check for duplicate emails
+        for (User u : users) {
+            if(u.getEmail().equalsIgnoreCase(email)) {
+                System.out.println("Error: Email already registered!");
+                return;
+            }
+        }
+
+        System.out.print("Enter Display Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter Password: ");
+        String rawPassword = scanner.nextLine();
+
+        // Hash the password
+        String hashedPassword = hashPassword(rawPassword);
+
+        // Add to in-memory list
+        users.add(new User(email, name, hashedPassword));
+
+        // Append the text file
+        try (java.io.FileWriter fw = new FileWriter("src/main/UserData.txt", true);
+             java.io.PrintWriter pw = new PrintWriter(fw)) {
+
+            pw.println(email);
+            pw.println(name);
+            pw.println(hashedPassword);
+            pw.println();
+
+            System.out.println("Registration Successful! You can now login.");
+
+        } catch (java.io.IOException e) { System.out.println("Error saving new user."); }
+
+    }
+
     public static boolean login (String email, String rawPassword) {
+        // Method to check credentials
         // 1. Hash the input password immediately
         String hashedPassword = hashPassword(rawPassword);
 
@@ -95,7 +170,26 @@ public class SmartJournalApp {
         return false;
     }
 
-    // Shows welcome page
+    private static String hashPassword (String originalPassword) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
+
+            // Convert byte array to Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedhash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static void showWelcomePage () {
         // Get the current time
         java.time.LocalTime now = java.time.LocalTime.now();
@@ -122,7 +216,8 @@ public class SmartJournalApp {
             // URL provided in assignment for KL
             String url = "https://api.data.gov.my/weather/forecast/?contains=WP%20Kuala%20Lumpur@location__location_name&sort=date&limit=1";
             String response = api.get(url);
-            String weather = extractWeatherForecast(response);
+            String rawWeather = extractWeatherForecast(response);
+            String weather = simplifyWeather(rawWeather);
 
             System.out.println("Current Weather: " + weather);
 
@@ -157,77 +252,7 @@ public class SmartJournalApp {
         }
     }
 
-    // --- HELPER 1: Extract Weather ---
-    // Target: "summary_forecast":"Cloudy" -> We want "Cloudy"
-    private static String extractWeatherForecast (String jsonResponse) {
-        String key = "\"summary_forecast\":\"";
-        int startIndex = jsonResponse.indexOf(key);
-
-        if (startIndex == -1) return "Weather data unavailable"; // Safety check
-
-        // Move start index to the beginning of the actual value
-        startIndex += key.length();
-
-        // Find the closing quote "
-        int endIndex = jsonResponse.indexOf("\"", startIndex);
-
-        return jsonResponse.substring(startIndex, endIndex);
-    }
-
-    // --- HELPER 2: Extract Mood ---
-    // Tip from Assignment : "The label that has the highest score will display first"
-    // So we just need to find the FIRST "label" pattern we see.
-    private static String extractMoodLabel(String jsonResponse) {
-        String key = "\"label\":\"";
-        int startIndex = jsonResponse.indexOf(key);
-
-        if (startIndex == -1) return "Mood unavailable"; // Safety check
-
-        startIndex += key.length();
-        int endIndex = jsonResponse.indexOf("\"", startIndex);
-
-        return jsonResponse.substring(startIndex, endIndex);
-    }
-
-    // DATA STORAGE: LOAD
-    private static void loadJournalData () {
-        File file = new File("src/main/JournalData.txt");
-        if(!file.exists()) return;
-
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                // Split by "|" symbol. We use \\| because | is a special regex character
-                String[] parts = line.split("\\|", 5);
-
-                if (parts.length == 5) {
-                    String date = parts[0];
-                    String email = parts[1];
-                    String mood = parts[2];
-                    String weather = parts[3];
-                    String content = parts[4];
-
-                    journals.add(new JournalEntry(date, email, content, mood, weather));
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Error reading journal data.");
-        }
-    }
-
-    // --- DATA STORAGE: SAVE ---
-    // We rewrite the whole file every time (Simple but effective for small data)
-    private static void saveJournalData() {
-        try (java.io.PrintWriter writer = new java.io.PrintWriter("src/main/JournalData.txt")){
-            for (JournalEntry entry : journals) {
-                writer.println(entry.toFileString());
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Error saving journal data.");
-        }
-    }
+    // === Core Journal Features ===
 
     private static void handleJournalFeature () {
         Scanner scanner = new Scanner(System.in);
@@ -236,26 +261,40 @@ public class SmartJournalApp {
         while (true) {
             System.out.println("\n=== Journal Dates ===");
             // 1. Show past 3 days + Today
-            for (int i = 3; i >= 0; i--) {
+            for (int i = 6; i >= 0; i--) {
                 java.time.LocalDate date = today.minusDays(i);
                 String label = (i == 0) ? " (Today)" : "";
-                System.out.println((4 - i) + ". " + date + label);
+                System.out.println((7 - i) + ". " + date + label);
             }
-            System.out.println("5. Back to Main Menu");
+            System.out.println("8. Enter Specific Date");
+            System.out.println("9. Back to Main Menu");
             System.out.print("Select a date to view/create: ");
 
             String choice = scanner.nextLine();
-            if (choice.equals("5")) return; // Go back
+            if (choice.equals("9")) return; // Go back
 
-            // Map choice 1-4 to actual dates
-            int daysToSubtract = 4 - Integer.parseInt(choice);
-            if (daysToSubtract < 0 || daysToSubtract > 3) {
-                System.out.println("Invalid choice.");
+            // Logic for specific date
+            if (choice.equals("8")) {
+                System.out.print("Enter date (YYYY-MM-DD): ");
+                String manualDate = scanner.nextLine();
+                processDateSelection(manualDate);
                 continue;
             }
 
-            String selectedDate = today.minusDays(daysToSubtract).toString();
-            processDateSelection(selectedDate);
+            try {
+                int daysToSubtract = 7 - Integer.parseInt(choice);
+
+                if (daysToSubtract < 0 | daysToSubtract > 6) {
+                    System.out.println("Invalid choice.");
+                    continue;
+                }
+
+                String selectedDate = today.minusDays(daysToSubtract).toString();
+                processDateSelection(selectedDate);
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Input.");
+            }
         }
     }
 
@@ -331,7 +370,8 @@ public class SmartJournalApp {
         try {
             String url = "https://api.data.gov.my/weather/forecast/?contains=WP%20Kuala%20Lumpur@location__location_name&sort=date&limit=1";
             String response = api.get(url);
-            weather = extractWeatherForecast(response);
+            String rawWeather = extractWeatherForecast(response);
+            weather = simplifyWeather(rawWeather);
 
         } catch (Exception e) {
             System.out.println("Weather fetch failed.");
@@ -373,6 +413,100 @@ public class SmartJournalApp {
         System.out.println("Journal updated! New Mood: " + newMood);
     }
 
+    private static void loadJournalData () {
+        // DATA STORAGE: LOAD
+        File file = new File("src/main/JournalData.txt");
+        if(!file.exists()) return;
+
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                // Split by "|" symbol. We use \\| because | is a special regex character
+                String[] parts = line.split("\\|", 5);
+
+                if (parts.length == 5) {
+                    String date = parts[0];
+                    String email = parts[1];
+                    String mood = parts[2];
+                    String weather = parts[3];
+                    String content = parts[4];
+
+                    journals.add(new JournalEntry(date, email, content, mood, weather));
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error reading journal data.");
+        }
+    }
+
+    private static void saveJournalData() {
+        // --- DATA STORAGE: SAVE ---
+        // We rewrite the whole file every time (Simple but effective for small data)
+        try (java.io.PrintWriter writer = new java.io.PrintWriter("src/main/JournalData.txt")){
+            for (JournalEntry entry : journals) {
+                writer.println(entry.toFileString());
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error saving journal data.");
+        }
+    }
+
+    // === API / AI Features ===
+
+    private static String extractWeatherForecast (String jsonResponse) {
+        // --- HELPER 1: Extract Weather ---
+        // Target: "summary_forecast":"Cloudy" -> We want "Cloudy"
+        String key = "\"summary_forecast\":\"";
+        int startIndex = jsonResponse.indexOf(key);
+
+        if (startIndex == -1) return "Weather data unavailable"; // Safety check
+
+        // Move start index to the beginning of the actual value
+        startIndex += key.length();
+
+        // Find the closing quote "
+        int endIndex = jsonResponse.indexOf("\"", startIndex);
+
+        return jsonResponse.substring(startIndex, endIndex);
+    }
+
+    public static String simplifyWeather (String rawWeather) {
+        // Helper to convert raw API text into simple English
+        if (rawWeather == null) return "Unknown";
+
+        // Convert to lowercase
+        String lower = rawWeather.toLowerCase();
+
+        if (lower.contains("berjerebu")) {
+            return "Hazy";
+        } else if (lower.contains("hujan")) {
+            return "Rainy";
+        } else if (lower.contains("ribut")) {
+            return "Stormy";
+        } else if (lower.contains("tiada hujan")) {
+            return "Sunny";
+        } else {
+            // If we don't recognize it, just return the first 10 chars of the original so it fits the table
+            return rawWeather.length() > 10 ? rawWeather.substring(0, 10) + "..." : rawWeather;
+        }
+    }
+
+    private static String extractMoodLabel(String jsonResponse) {
+        // --- HELPER 2: Extract Mood ---
+        // Tip from Assignment : "The label that has the highest score will display first" So we just need to find the FIRST "label" pattern we see.
+        String key = "\"label\":\"";
+        int startIndex = jsonResponse.indexOf(key);
+
+        if (startIndex == -1) return "Mood unavailable"; // Safety check
+
+        startIndex += key.length();
+        int endIndex = jsonResponse.indexOf("\"", startIndex);
+
+        return jsonResponse.substring(startIndex, endIndex);
+    }
+
     private static void showWeeklySummary () {
         System.out.println("\n=== Weekly Mood & Weather Summary ===");
         System.out.printf("%-15s %-15s %-30s%n", "Date", "Mood", "Weather"); // Table Header
@@ -406,23 +540,4 @@ public class SmartJournalApp {
         new Scanner(System.in).nextLine();
     }
 
-    private static String hashPassword (String originalPassword) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedhash = digest.digest(originalPassword.getBytes(StandardCharsets.UTF_8));
-
-            // Convert byte array to Hex String
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : encodedhash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
