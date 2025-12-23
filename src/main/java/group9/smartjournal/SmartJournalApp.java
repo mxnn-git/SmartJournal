@@ -20,15 +20,11 @@ public class SmartJournalApp {
     // Store environment variables
     public static java.util.Map<String, String> env;
     private static API api = new API();
+    private static DatabaseHandler db = new DatabaseHandler();
 
-    public static void main (String[] args) {
+    static void main () {
 
          /*
-         // TEMP: Generate hashes for the assignment users
-         System.out.println("Hash for pw-Stud#1: " + hashPassword("pw-Stud#1"));
-         System.out.println("Hash for pw-Stud#2: " + hashPassword("pw-Stud#2"));
-         System.exit(0); // Uncomment this if you just want to see the hashes and stop
-
          s100201@student.fop
          Foo Bar
          pw-Stud#1
@@ -39,11 +35,16 @@ public class SmartJournalApp {
          */
 
         // 1. Load Env
-        env = EnvLoader.loadEnv("src/main/.env");
+        env = EnvLoader.loadEnv("./.env");
 
         // 2. Load data from text file
         loadUserData();
-        loadJournalData();
+        // loadJournalData();
+        // 1. Create database table if it doesn't exist
+        db.createTable();
+
+        // 2. Load journals from the database
+        journals = db.loadJournals();
 
         // 3. Start the login process
         Scanner inputScanner = new Scanner(System.in);
@@ -86,7 +87,7 @@ public class SmartJournalApp {
     public static void loadUserData () {
         // Method to read the text file
         // RELATIVE PATH: We just use the path name. Java looks in the project root
-        File file = new File("src/main/UserData.txt");
+        File file = new File("./UserData.txt");
 
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
@@ -119,6 +120,11 @@ public class SmartJournalApp {
 
         System.out.print("Enter Email: ");
         String email = scanner.nextLine();
+
+        if (!email.contains("@") || !email.contains(".")) {
+            System.out.println("Invalid email format. Registration cancelled.");
+            return;
+        }
 
         // Check for duplicate emails
         for (User u : users) {
@@ -235,7 +241,7 @@ public class SmartJournalApp {
             System.out.println("\n=== Main Menu ===");
             System.out.println("1. Create, Edit & View Journals");
             System.out.println("2. View Weekly Mood Summary");
-            System.out.println("3. Exit");
+            System.out.println("3. Logout");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine();
@@ -244,8 +250,9 @@ public class SmartJournalApp {
                 case "1" -> handleJournalFeature();
                 case "2" -> showWeeklySummary();
                 case "3" -> {
-                    System.out.println("Goodbye!");
-                    System.exit(0);
+                    System.out.println("Logging out...");
+                    currentUser = null; // Clear the session
+                    return; // Break the loop and return to 'main' which will prompt to log in again
                 }
                 default -> System.out.println("Invalid option.");
             }
@@ -264,21 +271,51 @@ public class SmartJournalApp {
             for (int i = 6; i >= 0; i--) {
                 java.time.LocalDate date = today.minusDays(i);
                 String label = (i == 0) ? " (Today)" : "";
-                System.out.println((7 - i) + ". " + date + label);
+
+                // Check-status: Do we have an entry for this date
+                boolean hasEntry = false;
+                for (JournalEntry entry : journals) {
+                    if (entry.getEmail().equals(currentUser.getEmail()) && entry.getDate().equals(date.toString())) {
+                        hasEntry = true;
+                        break;
+                    }
+                }
+
+                String statusMarker = hasEntry ? " [✓]" : " [ ]";
+
+                System.out.println((7 - i) + ". " + date + label + statusMarker);
             }
+
             System.out.println("8. Enter Specific Date");
-            System.out.println("9. Back to Main Menu");
+            System.out.println("9. Search Journals (Keyword)");
+            System.out.println("10. Back to Main Menu");
+
             System.out.print("Select a date to view/create: ");
-
             String choice = scanner.nextLine();
-            if (choice.equals("9")) return; // Go back
 
-            // Logic for specific date
-            if (choice.equals("8")) {
-                System.out.print("Enter date (YYYY-MM-DD): ");
-                String manualDate = scanner.nextLine();
-                processDateSelection(manualDate);
-                continue;
+            // Handle "Back"
+            switch (choice) {
+                case "10" -> {
+                    return; // Go back
+                }
+
+
+                // Logic for specific date
+                case "8" -> {
+                    String manualDate = promptForDate(scanner);
+
+                    if (manualDate != null) {
+                        processDateSelection(manualDate);
+                    }
+                    continue;
+                }
+
+
+                // Handle "Search"
+                case "9" -> {
+                    searchJournals();
+                    continue;
+                }
             }
 
             try {
@@ -345,6 +382,62 @@ public class SmartJournalApp {
         }
     }
 
+    private static void searchJournals () {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n=== Search Journals ===");
+        System.out.print("Enter keyword to search: ");
+        String keyword = scanner.nextLine().trim();
+
+        if (keyword.isEmpty()) return; // Don't search anything
+
+        System.out.println("\nResults for \"" + keyword + "\":");
+        System.out.println("-----------------------------------");
+
+        boolean found = false;
+        int matchCount = 0;
+
+        for (JournalEntry entry : journals) {
+            if (entry.getEmail().equals(currentUser.getEmail()) && entry.getContent().toLowerCase().contains(keyword.toLowerCase())) {
+
+                matchCount++;
+                System.out.println("Match #" + matchCount + " (" + entry.getDate() + ")");
+                System.out.println("Mood: " + entry.getMood() + " | Weather: " + entry.getWeather());
+
+                // Highlight the content
+                System.out.println("Content: " + entry.getContent());
+                System.out.println("-----------------------------------");
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No entries found containing \"" + keyword + "\"");
+        } else {
+            System.out.println("Found " + matchCount + " matching entries.");
+        }
+
+        System.out.println("Press Enter to return...");
+        scanner.nextLine();
+    }
+
+    private static String promptForDate (Scanner scanner) {
+        while (true) {
+            System.out.print("\nEnter date (YYYY-MM-DD) or 'B' to back: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("B")) return null;
+
+            try {
+                java.time.LocalDate.parse(input);
+
+                return input;
+
+            } catch (java.time.format.DateTimeParseException e) {
+                System.out.println("Invalid format! Please use YYYY-MM-DD (e.g., 2025-12-31)");
+            }
+        }
+    }
+
     private static void createNewJournal (String date) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nEnter your journal entry for " + date + ":");
@@ -380,7 +473,9 @@ public class SmartJournalApp {
         // 3. SAVE EVERYTHING
         JournalEntry newEntry = new JournalEntry(date, currentUser.getEmail(), content, mood, weather);
         journals.add(newEntry);
-        saveJournalData();
+        // Old: saveJournalData();
+        // New:
+        db.saveJournal(newEntry);
         System.out.println("Journal saved! Mood: " + mood + " | Weather: " + weather);
     }
 
@@ -393,7 +488,7 @@ public class SmartJournalApp {
 
         // AI Again
         System.out.println("Re-analysing mood...");
-        String newMood = "Unknown";
+        String newMood;
 
         try {
             String url = "https://router.huggingface.co/hf-inference/models/distilbert/distilbert-base-uncased-finetuned-sst-2-english";
@@ -409,48 +504,10 @@ public class SmartJournalApp {
 
         entry.setContent(newContent);
         entry.setMood(newMood);
-        saveJournalData();
+        // Old: saveJournalData();
+        // New:
+        db.saveJournal(entry);
         System.out.println("Journal updated! New Mood: " + newMood);
-    }
-
-    private static void loadJournalData () {
-        // DATA STORAGE: LOAD
-        File file = new File("src/main/JournalData.txt");
-        if(!file.exists()) return;
-
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                // Split by "|" symbol. We use \\| because | is a special regex character
-                String[] parts = line.split("\\|", 5);
-
-                if (parts.length == 5) {
-                    String date = parts[0];
-                    String email = parts[1];
-                    String mood = parts[2];
-                    String weather = parts[3];
-                    String content = parts[4];
-
-                    journals.add(new JournalEntry(date, email, content, mood, weather));
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Error reading journal data.");
-        }
-    }
-
-    private static void saveJournalData() {
-        // --- DATA STORAGE: SAVE ---
-        // We rewrite the whole file every time (Simple but effective for small data)
-        try (java.io.PrintWriter writer = new java.io.PrintWriter("src/main/JournalData.txt")){
-            for (JournalEntry entry : journals) {
-                writer.println(entry.toFileString());
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Error saving journal data.");
-        }
     }
 
     // === API / AI Features ===

@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a01aff7-341d-46c3-8bfe-3911f46a391a" name="Changes" comment="Init">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/JournalData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/JournalData.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/UserData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/JournalData.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/UserData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/API.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/API.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,11 +63,16 @@
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "onboarding.tips.debug.path": "C:/Users/mxnn/IdeaProjects/SmartJournal/src/main/java/group9/smartjournal/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "advanced.settings"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mxnn\IdeaProjects\SmartJournal" />
+      <recent name="C:\Users\mxnn\IdeaProjects\SmartJournal\lib" />
       <recent name="C:\Users\mxnn\IdeaProjects\SmartJournal\src\main" />
       <recent name="C:\Users\mxnn\IdeaProjects\SmartJournal\src\main\java" />
     </key>
@@ -87,6 +94,7 @@
     <configuration name="SmartJournalApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="group9.smartjournal.SmartJournalApp" />
       <module name="SmartJournal" />
+      <option name="VM_PARAMETERS" value="--enable-native-access=ALL-UNNAMED" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="group9.smartjournal.*" />
@@ -97,6 +105,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.API" />
+      <item itemvalue="Application.SmartJournalApp" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.SmartJournalApp" />
@@ -200,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766399790915</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Init">
+      <option name="closed" value="true" />
+      <created>1766409239611</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1766409239611</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="UnknownFeatures">
