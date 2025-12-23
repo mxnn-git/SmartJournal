@@ -147,7 +147,7 @@ public class SmartJournalApp {
         users.add(new User(email, name, hashedPassword));
 
         // Append the text file
-        try (java.io.FileWriter fw = new FileWriter("src/main/UserData.txt", true);
+        try (java.io.FileWriter fw = new FileWriter("./UserData.txt", true);
              java.io.PrintWriter pw = new PrintWriter(fw)) {
 
             pw.println(email);

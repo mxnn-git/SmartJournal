@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a01aff7-341d-46c3-8bfe-3911f46a391a" name="Changes" comment="Init">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/JournalData.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/UserData.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/API.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/API.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/UserData.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,48 +24,48 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "mxnn-git"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mxnn-git&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/mxnn-git/SmartJournal.git",
-    "accountId": "c6965faa-dfb7-428b-ac5a-e8714c9cfa7f"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mxnn-git/SmartJournal.git&quot;,
+    &quot;accountId&quot;: &quot;c6965faa-dfb7-428b-ac5a-e8714c9cfa7f&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="37BTLedQsP3TV1o3F0FTOus0itj" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.API.executor": "Run",
-    "Application.Main.executor": "Debug",
-    "Application.SmartJournalApp.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "onboarding.tips.debug.path": "C:/Users/mxnn/IdeaProjects/SmartJournal/src/main/java/group9/smartjournal/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "advanced.settings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.API.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.SmartJournalApp.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/mxnn/IdeaProjects/SmartJournal/src/main/java/group9/smartjournal/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\mxnn\IdeaProjects\SmartJournal" />
@@ -220,7 +217,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766409239611</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Init">
+      <option name="closed" value="true" />
+      <created>1766462691799</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1766462691799</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="UnknownFeatures">
