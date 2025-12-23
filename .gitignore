@@ -5,7 +5,8 @@ target/
 .kotlin
 
 .env
-JournalData.txt
+journal.db
+UserData.txt
 *.class
 
 ### IntelliJ IDEA ###
