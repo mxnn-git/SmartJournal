@@ -12,12 +12,10 @@ import java.util.Scanner;
 
 public class SmartJournalApp {
 
-    // Store all loaded users here
+    // Global Variables
     private static ArrayList<User> users = new ArrayList<>();
     private static ArrayList<JournalEntry> journals = new ArrayList<>();
-    private static User currentUser = null; // Keep track of who is logged in
-
-    // Store environment variables
+    private static User currentUser = null;
     public static java.util.Map<String, String> env;
     private static API api = new API();
     private static DatabaseHandler db = new DatabaseHandler();
@@ -34,21 +32,16 @@ public class SmartJournalApp {
          pw-Stud#2
          */
 
-        // 1. Load Env
         env = EnvLoader.loadEnv("./.env");
-
-        // 2. Load data from text file
         loadUserData();
-        // loadJournalData();
-        // 1. Create database table if it doesn't exist
         db.createTable();
 
-        // 2. Load journals from the database
+        // Load journals from the database
         journals = db.loadJournals();
 
-        // 3. Start the login process
+        // Start the login process
         Scanner inputScanner = new Scanner(System.in);
-        System.out.println("Welcome to Smart Journaling System");
+        System.out.println("\n=== Welcome to Smart Journaling System ===");
 
         while (currentUser == null) {
             System.out.println("\n1. Login");
@@ -86,7 +79,6 @@ public class SmartJournalApp {
 
     public static void loadUserData () {
         // Method to read the text file
-        // RELATIVE PATH: We just use the path name. Java looks in the project root
         File file = new File("./UserData.txt");
 
         try (Scanner fileScanner = new Scanner(file)) {
@@ -162,12 +154,11 @@ public class SmartJournalApp {
     }
 
     public static boolean login (String email, String rawPassword) {
-        // Method to check credentials
-        // 1. Hash the input password immediately
+        // Hash the input password immediately
         String hashedPassword = hashPassword(rawPassword);
 
         for (User user : users) {
-            // 2. Compare the hashed input vs the stored hash in the file
+            // Compare the hashed input vs the stored hash in the file
             if (user.getEmail().equals(email) && user.getPassword().equals(hashedPassword)) {
                 currentUser = user;
                 return true;
@@ -219,7 +210,7 @@ public class SmartJournalApp {
         try {
             System.out.println("Fetching weather for Kuala Lumpur...");
 
-            // URL provided in assignment for KL
+            // URL for KL
             String url = "https://api.data.gov.my/weather/forecast/?contains=WP%20Kuala%20Lumpur@location__location_name&sort=date&limit=1";
             String response = api.get(url);
             String rawWeather = extractWeatherForecast(response);
@@ -267,7 +258,7 @@ public class SmartJournalApp {
 
         while (true) {
             System.out.println("\n=== Journal Dates ===");
-            // 1. Show past 3 days + Today
+            // 1. Show past 6 days + Today
             for (int i = 6; i >= 0; i--) {
                 java.time.LocalDate date = today.minusDays(i);
                 String label = (i == 0) ? " (Today)" : "";
@@ -293,12 +284,11 @@ public class SmartJournalApp {
             System.out.print("Select a date to view/create: ");
             String choice = scanner.nextLine();
 
-            // Handle "Back"
             switch (choice) {
+                // Handle "Back"
                 case "10" -> {
                     return; // Go back
                 }
-
 
                 // Logic for specific date
                 case "8" -> {
@@ -309,7 +299,6 @@ public class SmartJournalApp {
                     }
                     continue;
                 }
-
 
                 // Handle "Search"
                 case "9" -> {
@@ -350,7 +339,6 @@ public class SmartJournalApp {
         if (existingEntry == null) {
             // CASE A: No entry exists.
             // You can only create entries for TODAY (usually).
-            // The assignment implies creating "for today" ,
             // but let's allow creating for past dates too for flexibility if you want.
             System.out.println("\nNo entry found for " + date);
             System.out.println("1. Create New Entry");
@@ -473,8 +461,6 @@ public class SmartJournalApp {
         // 3. SAVE EVERYTHING
         JournalEntry newEntry = new JournalEntry(date, currentUser.getEmail(), content, mood, weather);
         journals.add(newEntry);
-        // Old: saveJournalData();
-        // New:
         db.saveJournal(newEntry);
         System.out.println("Journal saved! Mood: " + mood + " | Weather: " + weather);
     }
@@ -506,14 +492,13 @@ public class SmartJournalApp {
         entry.setMood(newMood);
         // Old: saveJournalData();
         // New:
-        db.saveJournal(entry);
+        db.updateJournal(entry);
         System.out.println("Journal updated! New Mood: " + newMood);
     }
 
     // === API / AI Features ===
 
     private static String extractWeatherForecast (String jsonResponse) {
-        // --- HELPER 1: Extract Weather ---
         // Target: "summary_forecast":"Cloudy" -> We want "Cloudy"
         String key = "\"summary_forecast\":\"";
         int startIndex = jsonResponse.indexOf(key);
@@ -530,7 +515,7 @@ public class SmartJournalApp {
     }
 
     public static String simplifyWeather (String rawWeather) {
-        // Helper to convert raw API text into simple English
+        // Convert raw API text into simple English
         if (rawWeather == null) return "Unknown";
 
         // Convert to lowercase
