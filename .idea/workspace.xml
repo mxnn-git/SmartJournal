@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a01aff7-341d-46c3-8bfe-3911f46a391a" name="Changes" comment="Init">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserData.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/journal.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/DatabaseHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/JournalEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/JournalEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,28 +46,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.API.executor": "Run",
-    "Application.Main.executor": "Debug",
-    "Application.SmartJournalApp.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/mxnn/IdeaProjects/SmartJournal/src/main/java/group9/smartjournal/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "advanced.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.API.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.SmartJournalApp.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/mxnn/IdeaProjects/SmartJournal/src/main/java/group9/smartjournal/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\mxnn\IdeaProjects\SmartJournal" />
@@ -136,7 +131,10 @@
       <option name="presentableId" value="Default" />
       <updated>1766375411164</updated>
       <workItem from="1766545404131" duration="80000" />
-      <workItem from="1766545495325" duration="1476000" />
+      <workItem from="1766545495325" duration="1627000" />
+      <workItem from="1766817498131" duration="115000" />
+      <workItem from="1767573650472" duration="1151000" />
+      <workItem from="1768177301394" duration="313000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -258,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766481935090</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Init">
+      <option name="closed" value="true" />
+      <created>1766546992607</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1766546992608</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
