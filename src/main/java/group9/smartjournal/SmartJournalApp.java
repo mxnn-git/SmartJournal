@@ -10,10 +10,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/*
-    Main application class.
-    Handles user authentication, journal management, AI mood analysis and real-time weather integration.
- */
 public class SmartJournalApp {
 
     // Global Variables
@@ -92,7 +88,7 @@ public class SmartJournalApp {
             while (fileScanner.hasNextLine()) {
                 String email = fileScanner.nextLine().trim(); // Read and remove extra spaces
 
-                // DATA HANDLING: If we hit an empty line (the gap), skip this iteration
+                // If we hit an empty line (the gap), skip this iteration
                 if (email.isEmpty())
                     continue;
 
@@ -120,6 +116,7 @@ public class SmartJournalApp {
         System.out.print("Enter Email: ");
         String email = scanner.nextLine();
 
+        // Proper email format
         if (!email.contains("@") || !email.contains(".")) {
             System.out.println("Invalid email format. Registration cancelled.");
             return;
@@ -270,7 +267,7 @@ public class SmartJournalApp {
                 java.time.LocalDate date = today.minusDays(i);
                 String label = (i == 0) ? " (Today)" : "";
 
-                // Check-status: Do we have an entry for this date
+                // Check if we have an entry for this date
                 boolean hasEntry = false;
                 for (JournalEntry entry : journals) {
                     if (entry.getEmail().equals(currentUser.getEmail()) && entry.getDate().equals(date.toString())) {
@@ -332,7 +329,7 @@ public class SmartJournalApp {
     }
 
     private static void processDateSelection(String date) {
-        // 1. Find the specific entry object
+        // Find the specific entry object
         JournalEntry existingEntry = null;
         for (JournalEntry entry : journals) {
             if (entry.getEmail().equals(currentUser.getEmail()) && entry.getDate().equals(date)) {
@@ -344,7 +341,7 @@ public class SmartJournalApp {
         Scanner scanner = new Scanner(System.in);
 
         if (existingEntry == null) {
-            // CASE A: No entry exists.
+            // No entry exists.
             System.out.println("\nNo entry found for " + date);
             System.out.println("1. Create New Entry");
             System.out.println("2. Back");
@@ -354,7 +351,7 @@ public class SmartJournalApp {
                 createNewJournal(date);
             }
         } else {
-            // CASE B: Entry exists.
+            // Entry exists.
             System.out.println("\nEntry exists for " + date);
             System.out.println("Mood: " + existingEntry.getMood());
             System.out.println("1. View Content");
@@ -380,7 +377,6 @@ public class SmartJournalApp {
         }
     }
 
-    // --- NEW DELETE HELPER METHOD ---
     private static void deleteJournalEntry(JournalEntry entry) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nAre you sure you want to delete this entry? (yes/no)");
@@ -388,10 +384,10 @@ public class SmartJournalApp {
         String confirm = scanner.nextLine();
 
         if (confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y")) {
-            // 1. Remove from Local List (Memory)
+            // Remove from Local List (Memory)
             journals.remove(entry);
 
-            // 2. Remove from Database (File)
+            // Remove from Database (File)
             db.deleteJournal(entry.getEmail(), entry.getDate());
 
             System.out.println("Entry deleted successfully!");
@@ -462,7 +458,7 @@ public class SmartJournalApp {
         System.out.print("> ");
         String content = scanner.nextLine();
 
-        // 1. ANALYZE MOOD
+        // Analyze mood
         System.out.println("Analyzing mood and weather...");
         String mood = "Unknown";
         try {
@@ -476,7 +472,7 @@ public class SmartJournalApp {
             System.out.println("AI Analysis failed.");
         }
 
-        // 2. FETCH WEATHER (NEW!)
+        // Fetch the weather
         String weather = "Unknown";
         try {
             String url = "https://api.data.gov.my/weather/forecast/?contains=WP%20Kuala%20Lumpur@location__location_name&sort=date&limit=1";
@@ -488,7 +484,7 @@ public class SmartJournalApp {
             System.out.println("Weather fetch failed.");
         }
 
-        // 3. SAVE EVERYTHING
+        // Save
         JournalEntry newEntry = new JournalEntry(date, currentUser.getEmail(), content, mood, weather);
         journals.add(newEntry);
         db.saveJournal(newEntry);
@@ -502,7 +498,7 @@ public class SmartJournalApp {
         System.out.print("> ");
         String newContent = scanner.nextLine();
 
-        // AI Again
+        // Reanalyze the mood
         System.out.println("Re-analysing mood...");
         String newMood;
 
@@ -520,8 +516,6 @@ public class SmartJournalApp {
 
         entry.setContent(newContent);
         entry.setMood(newMood);
-        // Old: saveJournalData();
-        // New:
         db.updateJournal(entry);
         System.out.println("Journal updated! New Mood: " + newMood);
     }
@@ -560,7 +554,7 @@ public class SmartJournalApp {
         } else if (lower.contains("tiada hujan")) {
             return "Sunny";
         } else {
-            // If we don't recognize it, just return the first 10 chars of the original so it fits the table
+            // If it doesn't recognize it, just return the first 10 chars of the original so it fits the table
             return rawWeather.length() > 10 ? rawWeather.substring(0, 10) + "..." : rawWeather;
         }
     }
@@ -609,5 +603,4 @@ public class SmartJournalApp {
         System.out.println("Press Enter to return to menu...");
         new Scanner(System.in).nextLine();
     }
-
 }
