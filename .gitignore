@@ -8,6 +8,8 @@ target/
 journal.db
 UserData.txt
 *.class
+./src/main/java/group9.smartjournal/SmartJournalGUI
+./src/main/java/group9.smartjournal/JournalLogic
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

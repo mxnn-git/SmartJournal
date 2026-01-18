@@ -331,8 +331,8 @@ public class SmartJournalApp {
         }
     }
 
-    private static void processDateSelection (String date) {
-        // 1. Check if we already have an entry for this user & date
+    private static void processDateSelection(String date) {
+        // 1. Find the specific entry object
         JournalEntry existingEntry = null;
         for (JournalEntry entry : journals) {
             if (entry.getEmail().equals(currentUser.getEmail()) && entry.getDate().equals(date)) {
@@ -345,8 +345,6 @@ public class SmartJournalApp {
 
         if (existingEntry == null) {
             // CASE A: No entry exists.
-            // You can only create entries for TODAY (usually).
-            // but let's allow creating for past dates too for flexibility if you want.
             System.out.println("\nNo entry found for " + date);
             System.out.println("1. Create New Entry");
             System.out.println("2. Back");
@@ -358,22 +356,47 @@ public class SmartJournalApp {
         } else {
             // CASE B: Entry exists.
             System.out.println("\nEntry exists for " + date);
-            System.out.println("Mood: " + existingEntry.getMood()); // Show the AI mood!
-            System.out.println("1. View Journal");
-            System.out.println("2. Edit Journal");
-            System.out.println("3. Back");
+            System.out.println("Mood: " + existingEntry.getMood());
+            System.out.println("1. View Content");
+            System.out.println("2. Edit Content");
+            System.out.println("3. Delete Entry"); // <--- NEW OPTION
+            System.out.println("4. Back");
             System.out.print("> ");
 
             String subChoice = scanner.nextLine();
-            if (subChoice.equals("1")) {
-                System.out.println("\n--- Journal Content ---");
-                System.out.println(existingEntry.getContent());
-                System.out.println("-----------------------");
-                System.out.println("Press Enter to go back...");
-                scanner.nextLine();
-            } else if (subChoice.equals("2")) {
-                editJournal(existingEntry);
+            switch (subChoice) {
+                case "1" -> {
+                    System.out.println("\n--- Journal Content ---");
+                    System.out.println(existingEntry.getContent());
+                    System.out.println("-----------------------");
+                    System.out.println("Press Enter to go back...");
+                    scanner.nextLine();
+                }
+                case "2" -> editJournal(existingEntry);
+                case "3" -> deleteJournalEntry(existingEntry); // <--- NEW ACTION
+                case "4" -> { return; }
+                default -> System.out.println("Invalid option.");
             }
+        }
+    }
+
+    // --- NEW DELETE HELPER METHOD ---
+    private static void deleteJournalEntry(JournalEntry entry) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nAre you sure you want to delete this entry? (yes/no)");
+        System.out.print("> ");
+        String confirm = scanner.nextLine();
+
+        if (confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y")) {
+            // 1. Remove from Local List (Memory)
+            journals.remove(entry);
+
+            // 2. Remove from Database (File)
+            db.deleteJournal(entry.getEmail(), entry.getDate());
+
+            System.out.println("Entry deleted successfully!");
+        } else {
+            System.out.println("Deletion cancelled.");
         }
     }
 
