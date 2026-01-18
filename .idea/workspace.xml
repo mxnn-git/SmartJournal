@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3a01aff7-341d-46c3-8bfe-3911f46a391a" name="Changes" comment="Init">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/JournalEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/JournalEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/group9/smartjournal/SmartJournalApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +37,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -118,8 +119,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.138" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.138" />
+        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.29346.240" />
       </set>
     </attachedChunks>
   </component>
@@ -134,7 +135,10 @@
       <workItem from="1766545495325" duration="1627000" />
       <workItem from="1766817498131" duration="115000" />
       <workItem from="1767573650472" duration="1151000" />
-      <workItem from="1768177301394" duration="313000" />
+      <workItem from="1768177301394" duration="1337000" />
+      <workItem from="1768474183467" duration="615000" />
+      <workItem from="1768474850251" duration="349000" />
+      <workItem from="1768705136264" duration="1023000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -264,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766546992608</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Init">
+      <option name="closed" value="true" />
+      <created>1768177632904</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1768177632904</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

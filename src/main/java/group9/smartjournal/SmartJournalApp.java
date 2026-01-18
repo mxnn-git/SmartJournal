@@ -10,6 +10,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+    Main application class.
+    Handles user authentication, journal management, AI mood analysis and real-time weather integration.
+ */
 public class SmartJournalApp {
 
     // Global Variables
@@ -23,6 +27,8 @@ public class SmartJournalApp {
     static void main () {
 
          /*
+         User Login details.
+
          s100201@student.fop
          Foo Bar
          pw-Stud#1
@@ -32,6 +38,7 @@ public class SmartJournalApp {
          pw-Stud#2
          */
 
+        // Loads env and creates a database table.
         env = EnvLoader.loadEnv("./.env");
         loadUserData();
         db.createTable();

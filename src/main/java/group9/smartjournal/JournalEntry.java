@@ -15,6 +15,7 @@ public class JournalEntry {
         this.weather = weather;
     }
 
+    // Getter and Setters
     public String getDate() { return date; }
     public String getEmail() { return email; }
     public String getContent() { return content; }
