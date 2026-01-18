@@ -543,8 +543,6 @@ public class SmartJournalApp {
     }
 
     private static String extractMoodLabel(String jsonResponse) {
-        // --- HELPER 2: Extract Mood ---
-        // Tip from Assignment : "The label that has the highest score will display first" So we just need to find the FIRST "label" pattern we see.
         String key = "\"label\":\"";
         int startIndex = jsonResponse.indexOf(key);
 

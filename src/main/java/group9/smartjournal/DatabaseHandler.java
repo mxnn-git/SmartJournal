@@ -68,4 +68,17 @@ public class DatabaseHandler {
             pstmt.executeUpdate();
         } catch (SQLException e) { System.out.println(e.getMessage()); }
     }
+
+    // 6. Delete Journal Entry
+    public void deleteJournal(String email, String date) {
+        String sql = "DELETE FROM journals WHERE email = ? AND date = ?";
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.setString(2, date);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error deleting journal: " + e.getMessage());
+        }
+    }
 }
